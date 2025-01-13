@@ -2,7 +2,7 @@
 #include <DehumidifyingMultiStageThermostat.h>
 DehumidifyingMultiStageThermostat::DehumidifyingMultiStageThermostat(uint8_t pDHTSensorPin):MultiStageThermostat(pDHTSensorPin)
 {
-    lastStage = -1;
+    
     dehuSettings.bottomTempLimit = 1.0;
     dehuSettings.bottomTempRange = 0.2;
     dehuSettings.HumidityLimit = 55;
@@ -13,6 +13,7 @@ DehumidifyingMultiStageThermostat::DehumidifyingMultiStageThermostat(uint8_t pDH
 
 int DehumidifyingMultiStageThermostat::getStage()
 {
+    int LastStage = MultiStageThermostat::getLastStage();
     int newStage = MultiStageThermostat::getStage();
 
     // if we're in cooling mode, and getStage() returns zero, go into dehumidify mode
@@ -58,7 +59,7 @@ int DehumidifyingMultiStageThermostat::getStage()
                 }
             }
             // sticky
-            if (sticky && lastStage != 0)
+            if (sticky && LastStage != 0)
             {
                 newStage = 1;
             }
@@ -66,7 +67,7 @@ int DehumidifyingMultiStageThermostat::getStage()
             
         }
     }
-    lastStage = newStage;
+    MultiStageThermostat::setLastStage(newStage);
     return newStage;
 }
 
@@ -76,5 +77,5 @@ void DehumidifyingMultiStageThermostat::SetParameters(DehuSettings* newSettings)
     dehuSettings.bottomTempRange= newSettings->bottomTempRange;
     dehuSettings.HumidityLimit= newSettings->HumidityLimit;
     dehuSettings.HumidityRange= newSettings->HumidityRange;
-    lastStage = -1;
+    
 }

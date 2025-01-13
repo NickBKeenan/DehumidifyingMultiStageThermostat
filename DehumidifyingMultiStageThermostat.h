@@ -14,7 +14,7 @@ struct DehuSettings
 
 class DehumidifyingMultiStageThermostat:public MultiStageThermostat
 {
-	int lastStage;
+	
 	bool Enabled;
 	DehuSettings dehuSettings;
 
